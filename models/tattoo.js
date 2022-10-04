@@ -7,6 +7,7 @@ const tattoosSchema = new Schema({
     design: String,
     artist: String,
     cost: Number,
+    hours: Number,
     dateTattoed: Date
 })
 
