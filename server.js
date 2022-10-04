@@ -77,6 +77,16 @@ app.get("/tattoos/:id", (req, res) => {
         .catch(err => console.log(err))
 })
 
+// Post request (gives the ability to create new tattoo docs)
+app.post("/tattoos", (req, res) => {
+    Tattoo.create(req.body)
+        .then(tattoo => {
+            res.status(201).json({tattoo: tattoo.toObject() })
+        })
+        .catch(error => console.log(error))
+})
+
+
 // Server listener
 const PORT = process.env.PORT
 app.listen(PORT, () => console.log(`Now listening to the sweet sounds of port : ${PORT}`))
