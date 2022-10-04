@@ -98,6 +98,17 @@ app.put("/tattoos/:id", (req, res) => {
     .catch(err => console.log(err))
 })
 
+// Delete request (DESTROY ROUTE)
+app.delete("/tattoos/:id", (req, res) => {
+    const id = req.params.id
+
+    Tattoo.findByIdAndRemove(id)
+    .then(() => {
+        res.sendStatus(204)
+    })
+    .catch(err => console.log(err))
+})
+
 // Server listener
 const PORT = process.env.PORT
 app.listen(PORT, () => console.log(`Now listening to the sweet sounds of port : ${PORT}`))
