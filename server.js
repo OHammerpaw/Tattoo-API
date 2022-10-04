@@ -55,7 +55,7 @@ app.get("/tattoos/regen", (req, res) => {
         })
 })
 
-// Get request (index)
+// Get request (INDEX ROUTE)
 app.get("/tattoos", (req, res) => {
     Tattoo.find({})
         .then(tattoos => {
@@ -65,7 +65,7 @@ app.get("/tattoos", (req, res) => {
         .catch(err => console.log(err))
     })
 
-// Show request (finds and shows single resource)
+// Show request (READ ROUTE)
 app.get("/tattoos/:id", (req, res) => {
     const id = req.params.id
 
@@ -77,7 +77,7 @@ app.get("/tattoos/:id", (req, res) => {
         .catch(err => console.log(err))
 })
 
-// Post request (gives the ability to create new tattoo docs)
+// Post request (CREATE ROUTE)
 app.post("/tattoos", (req, res) => {
     Tattoo.create(req.body)
         .then(tattoo => {
@@ -86,6 +86,17 @@ app.post("/tattoos", (req, res) => {
         .catch(error => console.log(error))
 })
 
+// Put request (UPDATE ROUTE)
+app.put("/tattoos/:id", (req, res) => {
+    const id = req.params.id
+
+    Tattoo.findByIdAndUpdate(id, req.body, {new: true})
+    .then(tattoo => {
+        console.log('the tattoo from update:', tattoo)
+        res.sendStatus(204)
+    })
+    .catch(err => console.log(err))
+})
 
 // Server listener
 const PORT = process.env.PORT
