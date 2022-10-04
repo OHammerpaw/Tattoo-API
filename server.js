@@ -6,7 +6,7 @@ const mongoose = require("mongoose")
 const path = require("path")
 
 // Import models
-const Tattoo = require('./models/tattoo')
+const Tea = require('./models/tea')
 
 // Database connection
 const DATABASE_URL = process.env.DATABASE_URL
@@ -37,18 +37,18 @@ app.get("/", (req, res) => {
     res.send("Yay! The server is running!")
 })
 
-app.get("/tattoos/regen", (req, res) => {
-    const startTattoos = [
-        { design: 'Cat with Switchblade', artist: 'Miguel Olascuaga', cost: '350', hours: '2', dateTattoed: '04-04-2017' },
-        { design: 'Rhyme and Reason', artist: 'Miguel Olascuaga', cost: '150', hours: '.5', dateTattoed: '01-02-2018' },
-        { design: 'Crying Heart', artist: 'Javier Rivera', cost: '200', hours: '2.25', dateTattoed: '01-10-2019'},
-        { design: 'Persephone & Hades', artist: 'Miguel Olascuaga', cost: '420', hours: '3', dateTattoed: '10-12-2020'},
-        { design: 'Loofy', artist: 'Lauren Purson', cost: '600', hours: '5', dateTattoed: '01-23-21' },
-        { design: 'Freehand Floral', artist: 'Miguel Olßascuaga', cost: '1200', hours: '13', dateTattoed: '01-29-22' } 
+app.get("/teas/seed", (req, res) => {
+    const startTeas = [
+        {  name: 'Mesmerised', ingredients: 'Earl Grey Lavender, Valentines, Hibiscus', minutesBrew: '3', brewTemp: '212', caffinated: 'true' },
+        {  name: 'Sugar Cookie Sleigh Ride', ingredients: 'Milk Thistle, Roasted Barley, Orange Peel, Vanilla Bean', minutesBrew: '5', brewTemp: '212', caffinated: 'false' },
+        {  name: 'Pumpkin Spice', ingredients: 'Black Tea, Ginger, Cinnamon, Cloves, Pumpkin Flavor ', minutesBrew: '5', brewTemp: '212', caffinated: 'true'},
+        {  name: "Wizard's Grey", ingredients: 'Earl Grey Moonlight, Bklackberry, Chocolate', minutesBrew: '3', brewTemp: '212', caffinated: 'true'},
+        {  name: 'Polar Bears are Brilliant', ingredients: 'Ginger, White Pear, Vanilla Green', minutesBrew: '3', brewTemp: '180', caffinated: 'true' },
+        {  name: 'Bilbo Brew', ingredients: 'Irish Breakfast, Sweet Potato, Vanilla Green, Cinnamon Bits', minutesBrew: '3', brewTemp: '195', caffinated: 'true' } 
     ]
-    Tattoo.deleteMany({})
+    Tea.deleteMany({})
         .then(() => {
-            Tattoo.create(startTattoos)
+            Tea.create(startTeas)
                 .then(data => {
                     res.json(data)
                 })
@@ -56,53 +56,53 @@ app.get("/tattoos/regen", (req, res) => {
 })
 
 // Get request (INDEX ROUTE)
-app.get("/tattoos", (req, res) => {
-    Tattoo.find({})
-        .then(tattoos => {
-            res.json({ tattoos: tattoos})
+app.get("/teas", (req, res) => {
+    Tea.find({})
+        .then(teas => {
+            res.json({ teas: teas})
             console.log('index connected')
         })
         .catch(err => console.log(err))
     })
 
 // Show request (READ ROUTE)
-app.get("/tattoos/:id", (req, res) => {
+app.get("/teas/:id", (req, res) => {
     const id = req.params.id
 
-    Tattoo.findById(id)
-        .then(tattoo => {
-            res.json({ tattoo: tattoo})
+    Tea.findById(id)
+        .then(tea => {
+            res.json({ tea: tea})
             res.sendStatus(204)
         })
         .catch(err => console.log(err))
 })
 
 // Post request (CREATE ROUTE)
-app.post("/tattoos", (req, res) => {
-    Tattoo.create(req.body)
-        .then(tattoo => {
-            res.status(201).json({tattoo: tattoo.toObject() })
+app.post("/teas", (req, res) => {
+    Tea.create(req.body)
+        .then(tea => {
+            res.status(201).json({tea: tea.toObject() })
         })
         .catch(error => console.log(error))
 })
 
 // Put request (UPDATE ROUTE)
-app.put("/tattoos/:id", (req, res) => {
+app.put("/teas/:id", (req, res) => {
     const id = req.params.id
 
-    Tattoo.findByIdAndUpdate(id, req.body, {new: true})
-    .then(tattoo => {
-        console.log('the tattoo from update:', tattoo)
+    Tea.findByIdAndUpdate(id, req.body, {new: true})
+    .then(tea => {
+        console.log('the tea from update:', tea)
         res.sendStatus(204)
     })
     .catch(err => console.log(err))
 })
 
 // Delete request (DESTROY ROUTE)
-app.delete("/tattoos/:id", (req, res) => {
+app.delete("/teas/:id", (req, res) => {
     const id = req.params.id
 
-    Tattoo.findByIdAndRemove(id)
+    Tea.findByIdAndRemove(id)
     .then(() => {
         res.sendStatus(204)
     })

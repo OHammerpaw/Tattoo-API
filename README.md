@@ -1,1 +1,3 @@
-# Tattoo-API
+# Tea-API
+
+Database app of tea
