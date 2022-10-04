@@ -1,5 +1,7 @@
-
-const mongoose = require("mongoose")
+/////////////////////////
+// Schema and model for tea resource
+////////////////////////
+const mongoose = require('./connection')
 
 const { Schema, model } = mongoose
 
@@ -13,5 +15,7 @@ const TeaSchema = new Schema({
 
 const Tea = model("Tea", TeaSchema)
 
-
+/////////////////////////
+// Export our model
+////////////////////////
 module.exports = Tea
