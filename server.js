@@ -39,12 +39,12 @@ app.get("/", (req, res) => {
 
 app.get("/tattoos/regen", (req, res) => {
     const startTattoos = [
-        { design: 'Cat with switchblade', artist: 'Miguel Olascuaga', cost: '350', hours: '2', dateTattoed: '04-04-2017' },
+        { design: 'Cat with Switchblade', artist: 'Miguel Olascuaga', cost: '350', hours: '2', dateTattoed: '04-04-2017' },
         { design: 'Rhyme and Reason', artist: 'Miguel Olascuaga', cost: '150', hours: '.5', dateTattoed: '01-02-2018' },
         { design: 'Crying Heart', artist: 'Javier Rivera', cost: '200', hours: '2.25', dateTattoed: '01-10-2019'},
         { design: 'Persephone & Hades', artist: 'Miguel Olascuaga', cost: '420', hours: '3', dateTattoed: '10-12-2020'},
         { design: 'Loofy', artist: 'Lauren Purson', cost: '600', hours: '5', dateTattoed: '01-23-21' },
-        { design: 'Freehand Floral', artist: 'Miguel Olascuaga', cost: '1200', hours: '13', dateTattoed: '01-29-22' } 
+        { design: 'Freehand Floral', artist: 'Miguel Olßascuaga', cost: '1200', hours: '13', dateTattoed: '01-29-22' } 
     ]
     Tattoo.deleteMany({})
         .then(() => {
@@ -65,7 +65,17 @@ app.get("/tattoos", (req, res) => {
         .catch(err => console.log(err))
     })
 
+// Show request (finds and shows single resource)
+app.get("/tattoos/:id", (req, res) => {
+    const id = req.params.id
 
+    Tattoo.findById(id)
+        .then(tattoo => {
+            res.json({ tattoo: tattoo})
+            res.sendStatus(204)
+        })
+        .catch(err => console.log(err))
+})
 
 // Server listener
 const PORT = process.env.PORT
