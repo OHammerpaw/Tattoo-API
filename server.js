@@ -6,10 +6,11 @@ const express = require("express")
 const path = require("path")
 const TeaRouter = require('./controllers/teaControllers')
 const UserRouter = require('./controllers/userControllers')
+const ReviewRouter = require('./controllers/reviewControllers')
 const middleware = require('./utils/middleware')
 
 /////////////////////////
-// Create Express Aplication Object
+// Create Express Application Object
 ////////////////////////
 const app = express()
 
@@ -30,6 +31,7 @@ app.get("/", (req, res) => {
 ////////////////////////
 app.use('/teas', TeaRouter)
 app.use('/users', UserRouter)
+app.use( '/review', ReviewRouter)
 
 /////////////////////////
 // Server Listener
