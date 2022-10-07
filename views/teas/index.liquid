@@ -1,0 +1,33 @@
+{% layout 'layout.liquid' %}
+{% block content %}
+  <div>
+    <h2 class="display-6">All Teas</h2>
+    <div class="row">
+      {% for tea in teas %}
+        <div class="card">
+          <h5 class="card-header">{{tea.name}}
+          </h5>
+          <div class="card-body">
+            <h5 class="card-title">
+              {% if tea.caffinated %}
+                Caffinated
+              {% else %}
+                Caffiene Free
+              {% endif %}
+            </h5>
+            <p class="card-text">This tea must be steeped for
+              {{ tea.minutesBrew }}
+              minutes at
+              {{ tea.brewTemp }}
+              degrees.
+            </p>
+            <a class="btn btn-info" href="/teas/{{tea.id}}">
+              View
+              {{tea.name}}
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

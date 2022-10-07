@@ -17,43 +17,52 @@ const router = express.Router()
     Tea.find({})
     .populate("review.author", "username")
         .then(teas => {
-            res.json({ teas: teas})
-            console.log('index connected')
+           const username = req.session.username
+           const loggedIn = req.session.loggedIn
+           const userId = req.session.userId
+
+           res.render('teas/index', { teas, username, loggedIn, userId })
         })
         .catch(err => console.log(err))
     })
+
+//GET route for new fruit page
+router.get('/new', (req, res) => {
+    const username = req.session.username
+    const loggedIn = req.session.loggedIn
+    const userId = req.session.userId
+
+    res.render('teas/new', { username, loggedIn, userId })
+})
+
+// Post request (CREATE ROUTE)
+router.post("/", (req, res) => {
+    req.body.caffinated = req.body.caffinated === 'on' ? true : false
+    req.body.owner = req.session.userId
+    Tea.create(req.body)
+        .then(tea => {
+            res.redirect('/teas')
+        })
+        .catch(error => console.log(error))
+})
 
 // GET request (Only Fruits Owned by Logged In User)
 router.get('/mine', (req, res) => {
     Tea.find({ owner: req.session.userId })
     .populate("review.author", "username")
         .then(teas => {
-            res.status(200).json({ teas: teas})
+            const username = req.session.username
+            const loggedIn = req.session.loggedIn
+            const userId = req.session.userId
+
+            res.render('teas/index', { teas, username, loggedIn, userId })
         })
         .catch(error => res.json(error))
 })
 
-// Show request (READ ROUTE)
-router.get("/:id", (req, res) => {
-    const id = req.params.id
-
-    Tea.findById(id)
-        .populate("owner", "username")
-        .populate("review.author", "username")
-        .then(tea => {
-            res.json({ tea: tea})
-        })
-        .catch(err => console.log(err))
-})
-
-// Post request (CREATE ROUTE)
-router.post("/", (req, res) => {
-    req.body.owner = req.session.userId
-    Tea.create(req.body)
-        .then(tea => {
-            res.status(201).json({tea: tea.toObject() })
-        })
-        .catch(error => console.log(error))
+// GET request to show update page
+router.get('/edit/:id', (req, res) => {
+    res.send('edit page')
 })
 
 // Put request (UPDATE ROUTE)
@@ -72,20 +81,38 @@ router.put("/:id", (req, res) => {
     .catch(err => console.log(err))
 })
 
-// Delete request (DESTROY ROUTE)
-router.delete("/:id", (req, res) => {
+// Show request (READ ROUTE)
+router.get("/:id", (req, res) => {
     const id = req.params.id
 
     Tea.findById(id)
+        .populate("owner", "username")
+        .populate("review.author", "username")
+        .then(tea => {
+            const username = req.session.username
+            const loggedIn = req.session.loggedIn
+            const userId = req.session.userId
+
+            res.render('teas/show', { tea, username, loggedIn, userId })
+        })
+        .catch(err => console.log(err))
+})
+
+
+
+
+
+// Delete request (DESTROY ROUTE)
+router.delete("/:id", (req, res) => {
+    const teaId = req.params.id
+
+    Tea.findByIdAndRemove(teaId)
     .then(tea => {
-        if (tea.owner == req.session.userId) {
-            res.sendStatus(204)
-            return tea.deleteOne()
-        } else {
-            res.sendStatus(401)
-        }
+        res.redirect('/teas')
     })
-    .catch(err => console.log(err))
+    .catch(error => {
+        res.json({ error })
+    })
 })
 
 

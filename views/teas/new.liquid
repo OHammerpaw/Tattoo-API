@@ -1,0 +1,44 @@
+{% layout 'layout.liquid' %}
+{% block content %}
+
+    <div class="container-sm">
+        <form action="/teas" method="POST">
+            <fieldset>
+                <legend>Create New Tea</legend>
+                <label class="form-label">Name: </label>
+                <input
+                    class="form-control"
+                    type="text"
+                    name="name"
+                    placeholder="enter the name of the tea"
+                    >
+                <label class="form-label">Brew Time: </label>
+                <input
+                    class="form-control"
+                    type="number"
+                    name="minutesBrew"
+                    placeholder="how many minutes to brew?"
+                    >
+                    <label class="form-label">Brew Temp: </label>
+                <input
+                    class="form-control"
+                    type="number"
+                    name="brewTemp"
+                    placeholder="what temperature to brew?"
+                    >
+                <label class="form-label">Caffinated: </label>
+                <input
+                    class="form-check-input"
+                    type="checkbox"
+                    name="caffinated"
+                    >
+            </fieldset>
+            <input
+                class="btn btn-success"
+                type="submit"
+                value="Create New Tea"
+            >
+        </form>
+    </div>
+
+{% endblock %}

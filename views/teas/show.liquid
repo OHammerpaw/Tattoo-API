@@ -1,0 +1,30 @@
+{% layout 'layout.liquid' %}
+{% block content %}
+    <div class="container-md">
+        <article>
+            <h2>{{tea.name}}</h2>
+            <h4>
+                {% if tea.caffinated %}
+                    Caffinated
+                {% else %}
+                   Caffiene Free
+                {% endif %}
+            </h4>
+            <h4>This tea must be steeped for
+              {{ tea.minutesBrew }}
+              minutes at
+              {{ tea.brewTemp }}
+              degrees.</h4>
+            {% if tea.owner == userId %}
+                <div class="btn-group">
+                    {%- comment -%} first button will send us to the edit page {%- endcomment -%}
+                    <a class="btn btn-primary" href="/teas/edit/{{tea.id}}">Edit</a>
+                    {%- comment -%} the second button(which will actually be a form, will send a DELETE request) {%- endcomment -%}
+                    <form action="/teas/{{tea.id}}?_method=DELETE" method="POST">
+                        <input class="btn btn-danger" type="submit" value="Delete">
+                    </form>
+                </div>
+            {% endif %}
+        </article>
+    </div>
+{% endblock %}
