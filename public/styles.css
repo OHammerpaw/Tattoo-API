@@ -1,8 +1,7 @@
 body {
-    background-color: papayawhip
+    background-color: rgb(254, 250, 224)
 }
 
 .card {
     margin: 5px;
-    width: 18rem
 }

@@ -3,6 +3,7 @@
 ////////////////////////
 const mongoose = require('./connection')
 const reviewSchema = require('./review')
+const User = require('./user')
 
 const { Schema, model } = mongoose
 

@@ -25,7 +25,7 @@ db.on('open', () => {
 
             Tea.create(startTeas)
                 .then(data => {
-                    console.log('here are the newly created druits', data)
+                    console.log('here are the newly created teas', data)
                     db.close()
                 })
                 .catch(error => {

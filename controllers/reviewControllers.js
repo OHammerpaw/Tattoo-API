@@ -28,9 +28,9 @@ router.post("/:teaId", (req, res) => {
             return tea.save()
         })
         .then(tea => {
-            res.status(200).json({ tea: tea })
+            res.redirect(`/fruits/${fruit.id}`)
         })
-        .catch(error => console.log(error))
+        .catch(err => res.redirect(`/error?error=${err}`))
 })
 
 // DELETE
@@ -46,16 +46,17 @@ router.delete('/delete/:teaId/:revId', (req, res) => {
                 if (theReview.author == req.session.userId) {
                     theReview.remove()
                     tea.save()
-                    res.sendStatus(204)
+                    res.redirect(`/teas/${tea.id}`)
                 } else {
-                    res.sendStatus(401)
+                    const err = 'you%20are%20not%20authorized%20for%20this%20action'
+                    res.redirect(`/error?error=${err}`)
                 }
             } else {
-                res.sendStatus(401)
+                const err = 'you%20are%20not%20authorized%20for%20this%20action'
+                res.redirect(`/error?error=${err}`)
             }
         })
-        .catch(error => console.log(error))
-
+        .catch(err => res.redirect(`/error?error=${err}`))
 })
 
 //////////////////////////////////////////

@@ -1,10 +1,11 @@
 {% layout 'layout.liquid' %}
 {% block content %}
+  {% if teas.length > 0 %}
   <div>
     <h2 class="display-6">All Teas</h2>
     <div class="row">
       {% for tea in teas %}
-        <div class="card">
+        <div class="card" style= "18rem;">
           <h5 class="card-header">{{tea.name}}
           </h5>
           <div class="card-body">
@@ -30,4 +31,9 @@
       {% endfor %}
     </div>
   </div>
+  {% else %}
+    <div>
+      <h2 class="display-6"> No teas yet...time to add some!</h2>
+    </div>
+  {% endif %}  
 {% endblock %}

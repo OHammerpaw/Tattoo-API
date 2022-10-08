@@ -13,7 +13,7 @@ const router = express.Router()
 // Routes
 //////////////////////
 // Get request (INDEX ROUTE)
-.get("/", (req, res) => {
+router.get("/", (req, res) => {
     Tea.find({})
     .populate("review.author", "username")
         .then(teas => {
@@ -23,10 +23,10 @@ const router = express.Router()
 
            res.render('teas/index', { teas, username, loggedIn, userId })
         })
-        .catch(err => console.log(err))
+        .catch(err => res.redirect(`/error?error=${err}`))
     })
 
-//GET route for new fruit page
+//GET route for new tea page
 router.get('/new', (req, res) => {
     const username = req.session.username
     const loggedIn = req.session.loggedIn
@@ -41,9 +41,13 @@ router.post("/", (req, res) => {
     req.body.owner = req.session.userId
     Tea.create(req.body)
         .then(tea => {
+            const username = req.session.username
+            const loggedIn = req.session.loggedIn
+            const userId = req.session.userId
+
             res.redirect('/teas')
         })
-        .catch(error => console.log(error))
+        .catch(err => res.redirect(`/error?error=${err}`))
 })
 
 // GET request (Only Fruits Owned by Logged In User)
@@ -57,28 +61,45 @@ router.get('/mine', (req, res) => {
 
             res.render('teas/index', { teas, username, loggedIn, userId })
         })
-        .catch(error => res.json(error))
+        .catch(err => res.redirect(`/error?error=${err}`))
 })
 
 // GET request to show update page
 router.get('/edit/:id', (req, res) => {
-    res.send('edit page')
+    const username = req.session.username
+    const loggedIn = req.session.loggedIn
+    const userId = req.session.userId
+
+    const teaId = req.params.id
+
+    Tea.findById(teaId)
+        .then(tea => {
+            res.render('teas/edit', { tea, username, loggedIn, userId })
+        })
+        .catch(err => {
+            res.redirect(`/error?error=${err}`)
+        })
 })
 
 // Put request (UPDATE ROUTE)
 router.put("/:id", (req, res) => {
+    
     const id = req.params.id
 
+    req.body.caffinated = req.body.caffinated === 'on' ? true : false
+    console.log('req.body after changing checkbox value', req.body)
     Tea.findById(id)
     .then(tea => {
-        if(tea.owner == rew.session.userId) {
-            res.sendStatus(204)
+        if(tea.owner == req.session.userId) {
             return tea.updateOne(req.body)
         } else {
             res.sendStatus(401)
         }
     })
-    .catch(err => console.log(err))
+    .then(() => {
+        res.redirect(`/fruits/${id}`)
+    })
+    .catch(err => res.redirect(`/error?error=${err}`))
 })
 
 // Show request (READ ROUTE)
@@ -95,7 +116,7 @@ router.get("/:id", (req, res) => {
 
             res.render('teas/show', { tea, username, loggedIn, userId })
         })
-        .catch(err => console.log(err))
+        .catch(err => res.redirect(`/error?error=${err}`))
 })
 
 
@@ -111,7 +132,7 @@ router.delete("/:id", (req, res) => {
         res.redirect('/teas')
     })
     .catch(error => {
-        res.json({ error })
+        res.redirect(`/error?error=${err}`)
     })
 })
 

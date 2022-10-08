@@ -15,7 +15,7 @@ const router = express.Router()
 // Routes
 ////////////////////////
 
-//GET roue for signup
+//GET route for signup
 router.get('/signup', (req, res) => {
     res.render('users/signup')
 })
@@ -37,7 +37,7 @@ router.post('/signup', async (req, res) => {
         })
         .catch(err => {
             console.log(err)
-            res.json(err)
+            res.redirect(`error?error=user%20already%20exists`)
         })
 })
 
@@ -64,15 +64,15 @@ router.post('/login', async (req, res) => {
 
                     res.redirect('/teas')
                 } else {
-                    res.json({ error: 'username or password incorrect' })
+                    res.redirect(`/error?error=username%20or%20password%20incorrect`)
                 }
             } else {
-                re.json({ error: 'user does not exist' })
+                res.redirect(`error?error=user%20does%20not%20exist`)
             }
         })
         .catch(err => {
             console.log(err)
-            res.json(err)
+            res.redirect(`/error?error=${err}`)
         })
 })
 
@@ -85,13 +85,13 @@ router.get('/logout', (req, res) => {
     res.render('users/logout', { username, loggedIn, userId })
 })
 
-// a route for logout
+// a route for running logout
 router.delete('/logout', (req, res) => {
     req.session.destroy(err => {
         console.log('req.session after logout', req.session)
         console.log('err on logout', err)
 
-        res.sendStatus(204)
+        res.redirect('/')
     })
 })
 

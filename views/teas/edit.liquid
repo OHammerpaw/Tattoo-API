@@ -1,0 +1,53 @@
+{% layout 'layout.liquid' %}
+{% block content %}
+
+    <div class="container-sm">
+        {%- comment -%} change the action {%- endcomment -%}
+        {%- comment -%} add values to input fields {%- endcomment -%}
+        {%- comment -%} add a back button {%- endcomment -%}
+        <form action="/teas/{{tea.id}}?_method=PUT" method="POST">
+            <fieldset>
+                <legend>Edit {{tea.name}}</legend>
+                <label class="form-label">Name: </label>
+                <input
+                    class="form-control"
+                    type="text"
+                    name="name"
+                    placeholder="enter the name of the tea"
+                    value="{{ tea.name }}"
+                >
+                <label class="form-label">Brew Time(Min.): </label>
+                <input
+                    class="form-control"
+                    type="number"
+                    name="minutesBrew"
+                    placeholder="How long to brew tea?"
+                    value="{{ tea.minutesBrew }}"
+                >
+                 <label class="form-label">Brew Temperature: </label>
+                <input
+                    class="form-control"
+                    type="number"
+                    name="brewTemp"
+                    placeholder="What temperature for best brew? (F)"
+                    value="{{ tea.brewTemp }}"
+                >
+                <label class="form-label">Caffinated: </label>
+                <input
+                    class="form-check-input"
+                    type="checkbox"
+                    name="caffinated"
+                    {% if tea.caffinated %}
+                        checked
+                    {% endif %}
+                >
+            </fieldset>
+            <input
+                class="btn btn-success"
+                type="submit"
+                value="Edit {{tea.name}}"
+            >
+        </form>
+    </div>
+
+{% endblock %}
